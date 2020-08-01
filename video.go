@@ -11,11 +11,13 @@ import (
 )
 
 type Video struct {
-	ID       string
-	Streams  []Stream
-	Title    string
-	Author   string
-	Duration time.Duration
+	ID         string
+	Streams    []Stream
+	Title      string
+	Author     string
+	Uploader   string
+	UploadDate string
+	Duration   time.Duration
 }
 
 type Stream struct {
@@ -72,6 +74,8 @@ func (v *Video) parseVideoInfo(info string) error {
 
 	v.Title = prData.VideoDetails.Title
 	v.Author = prData.VideoDetails.Author
+	v.UploadDate = prData.Microformat.PlayerMicroformatRenderer.UploadDate
+	v.Uploader = prData.VideoDetails.Author
 
 	if seconds, _ := strconv.Atoi(prData.Microformat.PlayerMicroformatRenderer.LengthSeconds); seconds > 0 {
 		v.Duration = time.Duration(seconds) * time.Second
